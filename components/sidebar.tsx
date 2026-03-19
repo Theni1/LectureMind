@@ -17,13 +17,17 @@ type Message = {
   text: string;
 };
 
-export default function Sidebar() {
+type Props = {
+  documentId: number
+}
+
+export default function Sidebar({documentId}: Props) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const listRef = useRef<FlatList>(null);
 
-  function handleSend() {
+  async function handleSend() {
     if (!inputText.trim() || isLoading) return;
 
     const userMessage: Message = {
@@ -31,20 +35,22 @@ export default function Sidebar() {
       role: "user",
       text: inputText.trim(),
     };
-
     setMessages((prev) => [...prev, userMessage]);
     setInputText("");
     setIsLoading(true);
-
-    setTimeout(() => {
-      const assistantMessage: Message = {
+    const response = await fetch("http://localhost:8000/chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ document_id: documentId, question: userMessage.text})
+    })
+    const data = await response.json()
+    const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        text: "Test",
-      };
-      setMessages((prev) => [...prev, assistantMessage]);
-      setIsLoading(false);
-    }, 1000);
+        text: data.answer,
+    }
+    setMessages((prev) => [...prev, assistantMessage])
+    setIsLoading(false)
   }
 
   function renderMessage({ item }: { item: Message }) {
