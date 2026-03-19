@@ -7,13 +7,30 @@ import * as DocumentPicker from 'expo-document-picker';
 export default function Upload () {
     const router = useRouter();
     const [PDF, setPDF] = useState<DocumentPicker.DocumentPickerAsset | null>(null);
+    const [id, setId] = useState<number | null> (null);
+    const [uri, setUri] = useState <string|null>(null);
+
     useEffect(() => {
         async function upload() {
             const result = await DocumentPicker.getDocumentAsync({
-                type: '*/*', // or 'application/pdf'
+                type: 'application/pdf',
             })
             if (result.canceled == false) {
                 setPDF(result.assets[0])
+                const formData = new FormData();
+                formData.append("file", {
+                    uri: result.assets[0].uri,
+                    name: result.assets[0].name,
+                    type:"application/pdf",
+                    } as any)
+                const response = await fetch ("http://localhost:8000/upload", {
+                    method: "POST",
+                    body: formData,
+                })
+                const data = await response.json()
+                setId(data.document_id)
+                setUri(result.assets[0].uri)
+
             }
         }
         upload();
@@ -28,7 +45,7 @@ export default function Upload () {
             onPress={() => 
             router.push({
                 pathname: "/workspace",
-                params: { uri: PDF.uri }
+                params: { id: id, uri: uri }
             })}
             >
             <Text >View</Text>
