@@ -1,4 +1,6 @@
-FROM python:3.11                                                                                 
+FROM python:3.11 
+LABEL org.opencontainers.image.source=https://github.com/Theni1/LectureMind
+
                   
 WORKDIR /app
 
