@@ -1,15 +1,22 @@
 # LectureMind: AI-Powered PDF Study Assistant
-"Turn your lecture PDFs into clear, step-by-step explanations"
 
-LectureMind is designed for a simple workflow:
 
-1. Upload a lecture PDF from your device.
-2. Extract and chunk the document text.
-3. Generate embeddings for each chunk using OpenAI.
-4. Store those embeddings in PostgreSQL with `pgvector`.
-5. Ask questions about the document and receive context-grounded answers.
+<div align="center">
+  <img src="assets/logo.png" alt="LectureMind Logo" width="250"/>
+</div>
 
-Instead of manually searching through long lecture slides or notes, students can open a PDF and chat with it directly inside the app.
+---
+
+## About This Project
+
+This repository hosts the source code for **LectureMind**. LectureMind is a mobile app that allows students to upload lecture slides or notes and interact with them through a built-in chat interface, all within a single, side-by-side workspace. Instead of manually searching through lengthy materials, students can open a PDF and ask questions directly within the app.
+
+## 📸 Screenshots
+
+| **Home page** |
+|:---:|
+| <img src="assets/home.jpeg" width="300" /> |
+
 
 ## Key Features
 - PDF Upload: Import lecture notes and slide decks directly from the mobile app.
@@ -36,21 +43,6 @@ Instead of manually searching through long lecture slides or notes, students can
 - AI Models:
   - Embeddings: `text-embedding-3-small`
   - Chat: `gpt-4o-mini`
-
-## Architecture
-LectureMind follows a straightforward client-server architecture:
-
-- Expo Mobile App: Handles onboarding, PDF selection, document viewing, and the chat interface.
-- FastAPI Backend: Receives uploaded PDFs, extracts text, creates embeddings, and serves chat responses.
-- PostgreSQL + pgvector: Stores document metadata and embedding vectors for similarity search.
-- OpenAI API: Generates embeddings for document chunks and produces final grounded answers.
-
-## User Flow
-1. Open the app and tap `Try now`.
-2. Select a lecture PDF from your device.
-3. The app uploads the file to the FastAPI backend.
-4. The backend extracts the PDF text, chunks it, embeds it, and stores the results.
-5. Open the workspace and ask questions about the uploaded lecture content.
 
 ## Getting Started
 ### Prerequisites
